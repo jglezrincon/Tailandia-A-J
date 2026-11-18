@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" data-k>
+<meta name="viewport" content="width=device-width,initial-scale=1" data-k>
+<title data-k>Viaje a Tailandia</title>
+<link data-k rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;700&family=Sarabun:wght@400;600&display=swap">
+<style data-k>
+/* VOICE: cuaderno de viaje práctico y cálido, para consultar en el móvil
+IDEA: billete de barco del Andamán: ruta con paradas como estaciones
+PICTURE: escena del mar con islotes de roca caliza, sol de atardecer y barca de cola larga
+COLOUR and TYPE: teal profundo del mar, arena, coral del atardecer; Bai Jamjuree + Sarabun
+LAYOUT: banda héroe a todo ancho, hoy, ruta, y secciones en una columna con navegación fija */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#061d23);--ink:light-dark(#0c2328,#e6f2f1);--soft:light-dark(#4a6168,#9bb7b9);
+--sea:#0a5560;--sea2:#0f7b84;--coral:#ff5a3c;--sand:light-dark(#f3ead9,#0e2f37);--line:light-dark(#d9e3e2,#1d434b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 Sarabun,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3,.big{font-family:"Bai Jamjuree",system-ui,sans-serif;line-height:1.05;text-wrap:balance;margin:0}
+h2{font-size:clamp(26px,4vw,34px);margin-bottom:14px}
+h3{font-size:19px}
+a{color:inherit}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:1000px;margin:0 auto}
+.hero{background:linear-gradient(180deg,#0a4b56 0%,var(--sea) 55%,#08414a 100%);color:#f2fbfa;padding:0}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr);padding:clamp(24px,4vw,44px) max(5vw,16px) 0}
+.hero h1{font-size:clamp(34px,6vw,52px)}
+.hero p{margin:10px 0 0;color:#bfe3e2;font-size:17px}
+.pill{display:inline-block;margin-top:16px;background:var(--coral);color:#fff;font-weight:600;border-radius:999px;padding:6px 16px}
+.fig{position:relative;height:clamp(170px,30vw,280px);margin-top:12px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .scroll{display:flex;gap:4px;max-width:1000px;margin:0 auto;padding:6px max(5vw,10px)}
+nav a{flex:none;text-decoration:none;font-weight:600;padding:10px 14px;border-radius:999px;min-height:44px}
+nav a:hover,nav a:focus-visible{background:var(--sand)}
+.scroll{overflow-x:auto}
+html{scroll-padding-top:72px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.boat{animation:none!important}}
+.route{display:flex;flex-wrap:wrap;gap:6px 0;margin:0;padding:0;list-style:none}
+.route li{display:flex;align-items:center;font-weight:600}
+.route li:not(:last-child)::after{content:"";width:26px;height:2px;margin:0 8px;background:repeating-linear-gradient(90deg,var(--sea2) 0 5px,transparent 5px 9px)}
+.route small{font-weight:400;color:var(--soft);margin-left:5px}
+.today{background:var(--sand);border-radius:18px;padding:20px 22px;border-left:6px solid var(--coral)}
+.today .big{font-size:clamp(24px,4vw,30px);margin:4px 0 8px}
+.lbl{font-size:14px;color:var(--soft)}
+.days{list-style:none;margin:0;padding:0}
+.day{display:grid;grid-template-columns:88px minmax(0,1fr);gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+.day .when{font-family:"Bai Jamjuree",sans-serif;font-weight:700;font-size:22px;line-height:1.1;color:var(--sea2)}
+.day .when span{display:block;font-size:14px;font-weight:500;color:var(--soft)}
+.day ul{margin:6px 0 0;padding-left:18px}
+.day .sleep{font-size:14px;color:var(--soft);margin-top:6px}
+.day.now{background:var(--sand);border-radius:14px;padding:18px 14px;border-top-color:transparent}
+.day.now .when{color:var(--coral)}
+.tag{display:inline-block;font-size:13px;font-weight:600;background:var(--coral);color:#fff;border-radius:6px;padding:1px 8px;margin-left:8px;vertical-align:2px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:14px;color:var(--soft);font-weight:600}
+td.nw{white-space:nowrap}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0 14px}
+.bar i{display:block;height:100%;background:var(--coral);width:0;transition:width .3s}
+.check{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:0 24px}
+.check label{display:flex;gap:12px;align-items:flex-start;min-height:48px;padding:6px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check input{width:22px;height:22px;margin-top:3px;accent-color:var(--sea2);flex:none}
+.check input:checked+span{color:var(--soft);text-decoration:line-through}
+.status{font-size:14px;color:var(--soft)}
+.tickets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.ticket{border:2px dashed var(--sea2);border-radius:16px;padding:16px 18px}
+.ticket .big{font-size:28px;margin:6px 0}
+.ticket .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:15px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px 36px}
+.cols ul{padding-left:18px;margin:6px 0}
+footer{font-size:14px;color:var(--soft)}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start}
+.mapfig{max-width:440px}.mapfig svg{width:100%;height:auto;display:block;border-radius:16px}
+.m-sea{fill:light-dark(#cfe9ea,#0a2c33)}.m-land{fill:light-dark(#efe4cf,#16383f);stroke:light-dark(#d6c7a8,#24525a);stroke-width:1}
+.m-sealbl{font:italic 11px Sarabun,sans-serif;fill:light-dark(#3f7f86,#6fb0b3)}.m-ctx{font:10px Sarabun,sans-serif;fill:var(--soft)}
+.m-air,.m-road,.m-boat{fill:none;stroke-linecap:round}
+.m-air{stroke:var(--coral);stroke-width:2;stroke-dasharray:6 5}.m-road{stroke:light-dark(#0c2328,#e6f2f1);stroke-width:2.5}.m-boat{stroke:var(--sea2);stroke-width:2.5;stroke-dasharray:1 5}
+.m-pin circle{fill:var(--sea);stroke:#fff;stroke-width:2}.m-pin text{font:700 10px "Bai Jamjuree",sans-serif;fill:#fff;text-anchor:middle}
+.m-lbl{font:700 12px "Bai Jamjuree",sans-serif;fill:var(--ink);paint-order:stroke;stroke:light-dark(#efe4cf,#16383f);stroke-width:3px}
+.legs{list-style:none;margin:0 0 14px;padding:0}.legs li{padding:10px 0;border-bottom:1px solid var(--line)}.legs b{color:var(--sea2);margin-right:8px;font-family:"Bai Jamjuree",sans-serif}.legs span{display:block;font-size:14px;color:var(--soft)}
+.key{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:14px}.key i{display:inline-block;width:26px;height:0;margin-right:6px;vertical-align:middle;border-top-width:3px}
+.k-air{border-top:3px dashed var(--coral)}.k-road{border-top:3px solid var(--ink)}.k-boat{border-top:3px dotted var(--sea2)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.card{background:var(--bg);border-radius:16px;padding:18px 20px;border:1px solid var(--line)}.card p{margin:8px 0}.card ul{padding-left:18px;margin:8px 0}.card li{margin-bottom:6px}
+.grp{margin:18px 0 6px;font-family:"Bai Jamjuree",sans-serif;font-weight:700;font-size:18px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.grp small{font:14px Sarabun,sans-serif;color:var(--soft)}
+.check .how{display:block;font-size:14px;color:var(--soft)}
+@media(max-width:700px){.mapgrid{grid-template-columns:minmax(0,1fr)}.mapfig{max-width:none}}
+
+@media(max-width:600px){.day{grid-template-columns:66px minmax(0,1fr);gap:12px}.day .when{font-size:19px}
+table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:7em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:6.5em;margin-inline-start:-7em;color:var(--soft);font-size:13px}.stack td:empty{display:none}}
+</style>
+</head>
+<body>
+<header class="hero" data-k>
+  <div class="wrap">
+    <h1>Tailandia, del 1 al 15 de enero</h1>
+    <p>Julia y Ana · ruta por el mar de Andamán · sin moto, con libros</p>
+    <div><span class="pill" id="count">Cargando…</span></div>
+  </div>
+  <div class="fig" aria-hidden="true">
+    <svg viewBox="0 0 800 260" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a5560" stop-opacity="0"/><stop offset="1" stop-color="#ff9a6b" stop-opacity=".55"/></linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14a3a6"/><stop offset="1" stop-color="#075a63"/></linearGradient>
+        <linearGradient id="rock" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0c3c44"/><stop offset=".6" stop-color="#062b31"/><stop offset="1" stop-color="#041f24"/></linearGradient>
+      </defs>
+      <rect width="800" height="190" fill="url(#sky)"/>
+      <circle cx="560" cy="160" r="54" fill="#ff5a3c"/>
+      <circle cx="560" cy="160" r="72" fill="#ff5a3c" opacity=".18"/>
+      <path d="M40 190 C60 120 70 70 105 60 C130 55 140 95 150 120 C160 90 175 80 190 95 C205 115 210 160 225 190Z" fill="url(#rock)"/>
+      <path d="M105 60 C115 58 122 66 126 78" stroke="#2f8c8c" stroke-width="3" fill="none" opacity=".7"/>
+      <path d="M300 190 C310 150 320 128 340 124 C360 122 366 150 372 190Z" fill="url(#rock)" opacity=".85"/>
+      <path d="M640 190 C650 110 672 80 700 82 C728 86 735 130 742 150 C752 120 770 118 780 135 C790 155 795 175 800 190Z" fill="url(#rock)"/>
+      <path d="M700 82 C712 84 720 94 722 106" stroke="#2f8c8c" stroke-width="3" fill="none" opacity=".7"/>
+      <rect y="188" width="800" height="72" fill="url(#water)"/>
+      <rect x="520" y="190" width="80" height="4" rx="2" fill="#ffb08f" opacity=".7"/>
+      <rect x="535" y="202" width="50" height="3" rx="1.5" fill="#ffb08f" opacity=".5"/>
+      <rect x="548" y="214" width="26" height="3" rx="1.5" fill="#ffb08f" opacity=".35"/>
+      <g stroke="#9fe0dd" stroke-width="2" fill="none" opacity=".45">
+        <path d="M30 222 q20 -6 40 0 t40 0"/><path d="M230 240 q20 -6 40 0 t40 0"/><path d="M660 232 q20 -6 40 0 t40 0"/>
+      </g>
+      <g class="boat" style="animation:bob 4s ease-in-out infinite">
+        <path d="M380 206 L470 206 Q462 220 440 222 L398 222 Q386 218 380 206Z" fill="#f2e6d3"/>
+        <path d="M380 206 L470 206 L468 210 L382 210Z" fill="#ff5a3c"/>
+        <path d="M470 206 L492 190" stroke="#f2e6d3" stroke-width="3"/>
+        <path d="M402 206 L402 190 L438 190 L438 206" fill="#0c3c44"/>
+        <rect x="398" y="186" width="44" height="5" rx="2" fill="#f2e6d3"/>
+      </g>
+      <style>@keyframes bob{50%{transform:translateY(3px)}}</style>
+    </svg>
+  </div>
+</header>
+<nav data-k><div class="scroll"><a href="#hoy">Hoy</a><a href="#mapa">Ruta</a><a href="#traslados">Traslados</a><a href="#reservas">Por reservar</a><a href="#dormir">Dónde dormir</a><a href="#consejos">Consejos</a><a href="#maleta">Maleta</a><a href="#info">Vuelos e info</a></div></nav>
+<main data-k>
+  <section class="band" id="hoy"><div class="wrap">
+    <div class="today" id="todayBox"></div>
+    <ul class="route" style="margin-top:22px">
+      <li>Bangkok<small>1 noche</small></li><li>Krabi<small>3</small></li><li>Khao Sok<small>1</small></li><li>Koh Lanta<small>3</small></li><li>Koh Lipe<small>5</small></li><li>Bangkok<small>1</small></li>
+    </ul>
+  </div></section>
+  <section class="band" id="mapa" style="padding-top:0"><div class="wrap">
+    <h2>La ruta en el mapa</h2>
+    <div class="mapgrid">
+      <div class="mapfig"><svg viewBox="0 0 300 510" role="img" aria-label="Mapa del sur de Tailandia con la ruta Bangkok, Krabi, Khao Sok, Koh Lanta, Koh Lipe, Hat Yai y vuelta a Bangkok">
+        <rect width="300" height="510" class="m-sea"/>
+        <path class="m-land" d="M0 0H300V126L288 138L240 111L207 108L204 72L186 60L150 63L147 102L141 150L120 198L102 240L105 270L114 315L144 315L153 354L168 378L174 414L186 438L210 456L246 459L276 495L300 504V510H165L156 483L141 459L126 441L114 423L102 405L87 390L75 375L57 372L48 354L45 330L57 282L66 246L72 198L66 150L42 90L24 30L15 0Z"/>
+        <ellipse class="m-land" cx="51" cy="393" rx="5" ry="9"/><ellipse class="m-land" cx="150" cy="300" rx="6" ry="5"/>
+        <ellipse class="m-land" cx="93" cy="415" rx="4" ry="11"/><circle class="m-land" cx="108" cy="481" r="3.5"/><circle class="m-land" cx="99" cy="478" r="4"/>
+        <text class="m-sealbl" x="10" y="445">Mar de</text><text class="m-sealbl" x="10" y="459">Andamán</text>
+        <text class="m-sealbl" x="200" y="230">Golfo de</text><text class="m-sealbl" x="200" y="244">Tailandia</text>
+        <text class="m-ctx" x="40" y="410">Phuket</text><text class="m-ctx" x="158" y="296">Samui</text>
+        <path class="m-air" d="M180 45Q50 170 79 388"/>
+        <path class="m-air" d="M178 450Q275 260 180 45"/>
+        <path class="m-road" d="M79 388L78 332"/><path class="m-road" d="M79 388L93 415"/>
+        <path class="m-boat" d="M93 415Q80 462 108 481"/><path class="m-boat" d="M108 481Q150 476 178 450"/>
+        <g class="m-pin"><circle cx="180" cy="45" r="8"/><text x="180" y="49">1</text></g><text class="m-lbl" x="192" y="49">Bangkok</text>
+        <g class="m-pin"><circle cx="79" cy="388" r="8"/><text x="79" y="392">2</text></g><text class="m-lbl" x="67" y="380" text-anchor="end">Krabi</text>
+        <g class="m-pin"><circle cx="78" cy="332" r="8"/><text x="78" y="336">3</text></g><text class="m-lbl" x="90" y="336">Khao Sok</text>
+        <g class="m-pin"><circle cx="93" cy="415" r="8"/><text x="93" y="419">4</text></g><text class="m-lbl" x="105" y="412">Koh Lanta</text>
+        <g class="m-pin"><circle cx="108" cy="481" r="8"/><text x="108" y="485">5</text></g><text class="m-lbl" x="96" y="502" text-anchor="end">Koh Lipe</text>
+        <g class="m-pin"><circle cx="178" cy="450" r="8"/><text x="178" y="454">6</text></g><text class="m-lbl" x="190" y="440">Hat Yai</text>
+      </svg></div>
+      <div>
+        <ol class="legs">
+          <li><b>1 → 2</b> Bangkok → Krabi<span>Avión · 2 ene</span></li>
+          <li><b>2 ↔ 3</b> Krabi ↔ Khao Sok<span>Carretera · 4–5 ene</span></li>
+          <li><b>2 → 4</b> Krabi → Koh Lanta<span>Carretera y ferri corto · 6 ene</span></li>
+          <li><b>4 → 5</b> Koh Lanta → Koh Lipe<span>Lancha rápida · 9 ene</span></li>
+          <li><b>5 → 6</b> Koh Lipe → Hat Yai<span>Lancha + furgoneta · 14 ene</span></li>
+          <li><b>6 → 1</b> Hat Yai → Bangkok<span>Avión · 14 ene</span></li>
+        </ol>
+        <div class="key"><span><i class="k-air"></i>Avión</span><span><i class="k-road"></i>Carretera</span><span><i class="k-boat"></i>Barco</span></div>
+        <p class="lbl">Mapa esquemático: la costa está simplificada. Cada día de la ruta tiene su enlace a Google Maps.</p>
+      </div>
+    </div>
+  </div></section>
+  <section class="band" id="ruta"><div class="wrap">
+    <h2>Ruta día a día</h2>
+    <ol class="days" id="days"></ol>
+  </div></section>
+  <section class="band" id="traslados" style="background:var(--sand)"><div class="wrap">
+    <h2>Traslados</h2>
+    <table class="stack"><thead><tr><th>Día</th><th>Trayecto</th><th>Cómo</th><th>Duración</th><th>Nota</th></tr></thead><tbody id="trans"></tbody></table>
+  </div></section>
+  <section class="band" id="reservas"><div class="wrap">
+    <h2>Lo que queda por reservar</h2>
+    <div class="lbl" id="resCount"></div><div class="bar"><i id="resBar"></i></div>
+    <div id="resPend"></div>
+    <details id="resDoneBox" style="margin-top:18px"><summary style="cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center" id="resDoneSum"></summary><ul class="check" id="resDone"></ul></details>
+    <p class="status" id="sync">Las marcas se guardan en este dispositivo y navegador.</p>
+  </div></section>
+  <section class="band" id="dormir"><div class="wrap">
+    <h2>Dónde dormir</h2>
+    <div class="cards">
+      <div class="card"><h3>Krabi</h3><p><b>Klong Muang o Tubkaek.</b> Playas largas y tranquilas al norte de Ao Nang, a unos 20 minutos en coche. Menos restaurantes, más calma y vistas a los islotes.</p><p class="lbl">Alternativa: Railay, solo accesible en barca, más espectacular pero con más gente de día.</p></div>
+      <div class="card"><h3>Koh Lanta</h3><p><b>Kantiang o Klong Nin.</b> Playas amplias y calmadas en el sur de la costa oeste, las más cercanas a Old Town.</p><p class="lbl">La isla se recorre en moto; sin ella, tuk-tuk con sidecar o la excursión de Old Town con recogida en el hotel.</p></div>
+      <div class="card"><h3>Koh Lipe</h3><p><b>Sunrise Beach.</b> La playa más bonita y tranquila, buen snorkel desde la orilla, a 10 minutos andando de Walking Street.</p><p class="lbl">Pattaya Beach es más cómoda (llegan las lanchas) pero más animada de noche. Walking Street es lo más barato y ruidoso.</p></div>
+    </div>
+  </div></section>
+  <section class="band" id="consejos" style="background:var(--sand)"><div class="wrap">
+    <h2>Lo que dicen otros viajeros</h2>
+    <div class="cards">
+      <div class="card"><h3>Dinero</h3><ul>
+        <li>Los cajeros cobran unos 220 THB fijos por retirada a tarjetas extranjeras: sacad de una vez cantidades grandes.</li>
+        <li>Los de AEON cobran menos (unos 150 THB).</li>
+        <li>Cuando el cajero ofrezca convertir a euros, elegid <b>sin conversión</b>.</li>
+        <li>Una tarjeta tipo Wise o Revolut ahorra comisiones.</li>
+        <li>Llevad siempre algo de efectivo: islas y puestos van en baht.</li>
+      </ul></div>
+      <div class="card"><h3>Móvil y transporte</h3><ul>
+        <li>Instalad una eSIM antes de salir: necesitáis datos nada más aterrizar.</li>
+        <li>Instalad Grab y Bolt; Bolt suele ser algo más barato en el sur.</li>
+        <li>Algunas low cost a Krabi salen de Don Mueang (DMK), el otro aeropuerto de Bangkok: mirad bien desde dónde vuela.</li>
+        <li>No metáis seis sitios en diez días: la ruta ya va al límite de cambios.</li>
+      </ul></div>
+      <div class="card"><h3>Entrada y respeto</h3><ul>
+        <li>La TDAC es gratis: hacedla solo en tdac.immigration.go.th. Las webs que cobran son timos.</li>
+        <li>Guardad el QR de la TDAC como captura.</li>
+        <li>Está previsto cobrar una tasa de entrada de 300 THB.</li>
+        <li>Templos: hombros y rodillas cubiertos, descalzas dentro.</li>
+        <li>Nada de montar en elefantes: solo centros respetuosos, como el que conoce Bea.</li>
+      </ul></div>
+    </div>
+  </div></section>
+  <section class="band" id="maleta"><div class="wrap">
+    <h2>Maleta</h2>
+    <div class="lbl" id="malCount"></div><div class="bar"><i id="malBar"></i></div>
+    <ul class="check" id="mal"></ul>
+  </div></section>
+  <section class="band" id="info" style="background:var(--sand)"><div class="wrap">
+    <h2>Diario en Polarsteps</h2>
+    <div id="ps" style="margin-bottom:34px"></div>
+    <h2>Vuelos</h2>
+    <div class="tickets">
+      <div class="ticket"><div class="lbl">Ida · Iberojet E9-845 · tarifa Basic</div><div class="big">MAD → BKK</div>
+        <div class="row"><span>Jue 31 dic, 21:45</span><span>Vie 1 ene, 15:30</span></div><div class="lbl">11 h 45 min</div></div>
+      <div class="ticket"><div class="lbl">Vuelta · Iberojet E9-846 · tarifa Basic</div><div class="big">BKK → MAD</div>
+        <div class="row"><span>Vie 15 ene, 18:35</span><span>Sáb 16 ene, 02:25</span></div><div class="lbl">13 h 50 min</div></div>
+    </div>
+    <div class="cols" style="margin-top:28px">
+      <div><h3>Papeles</h3><ul>
+        <li>Pasaporte con al menos 6 meses de validez.</li>
+        <li>Sin visado: desde el 15 de septiembre de 2026 los españoles tienen 30 días (antes 60). Os sobra.</li>
+        <li>TDAC (tarjeta digital de llegada) online, en los 3 días antes de llegar.</li>
+        <li>Entrada al parque nacional en Koh Lipe: 200 THB.</li>
+      </ul></div>
+      <div><h3>Consejos de Bea</h3><ul>
+        <li>Llevad los libros de casa: en las islas no hay.</li>
+        <li>Evitar Phuket y Koh Phi Phi.</li>
+        <li>Preguntarle el nombre de la playa y del pueblo de locales al sur de Ao Nang.</li>
+        <li>Tiene contacto de un centro de elefantes respetuoso en Chiang Mai (otro viaje).</li>
+      </ul></div>
+    </div>
+    <footer style="margin-top:28px">Horarios de lanchas y duraciones son orientativos: confirmadlos al reservar.</footer>
+  </div></section>
+</main>
+<script type="application/json" id="state" data-k>{"done":{}}</script>
+<script data-k>
+{
+const $=s=>document.querySelector(s);
+const HEAD=[...document.head.querySelectorAll('[data-k]')].map(e=>e.outerHTML).join('\n');
+const BODY=[...document.body.children].filter(e=>e.hasAttribute('data-k')).map(e=>e.outerHTML).join('\n');
+let state={done:{}};try{state=JSON.parse($('#state').textContent)||state;state.done=state.done||{}}catch(e){}
+const LS='tailandia27';let art=null,timer=null;
+
+const map=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q+', Thailand');
+const DAYS=[
+['2027-01-01','Vie','1','Bangkok','Llegada',['Aterrizaje a las 15:30 en Suvarnabhumi','Cena tranquila y a dormir pronto'],'Bangkok'],
+['2027-01-02','Sáb','2','Krabi','Vuelo a Krabi',['Vuelo interno Bangkok → Krabi','Alojamiento en zona tranquila, no en el centro de Ao Nang','Tarde de playa'],'Krabi'],
+['2027-01-03','Dom','3','Ao Thalane, Krabi','Manglares de Ao Thalane',['Kayak por manglares y cañones de roca caliza; mejor la salida al atardecer','La playa al sur de Ao Nang que recomienda Bea'],'Krabi'],
+['2027-01-04','Lun','4','Cheow Lan Lake','Lago Cheow Lan (Khao Sok)',['Recogida en Krabi a primera hora','Barca de cola larga, canoa y baño en el lago','Noche en bungalow flotante: sencillo, ventilador, baño compartido'],'Bungalow flotante'],
+['2027-01-05','Mar','5','Khao Sok','Cueva y vuelta',['Amanecer en el lago y visita a la cueva','Vuelta a Krabi por la tarde'],'Krabi'],
+['2027-01-06','Mié','6','Koh Lanta','A Koh Lanta',['Furgoneta o taxi desde Krabi (2–3 h)','Dormir en Klong Nin o Kantiang'],'Koh Lanta'],
+['2027-01-07','Jue','7','Lanta Old Town','Old Town',['Casas sobre pilotes, batik y joyería hecha a mano','Hammock House: hamacas de la tribu Mlabri','Sin moto: tuk-tuk o taxi'],'Koh Lanta'],
+['2027-01-08','Vie','8','Kantiang Bay, Koh Lanta','Playa y libro',['Kantiang o Klong Nin','Atardecer en la costa oeste'],'Koh Lanta'],
+['2027-01-09','Sáb','9','Koh Lipe','Lancha a Koh Lipe',['Lancha rápida desde Saladan, unas 3 h','Llegada a Pattaya Beach: calzado que se pueda mojar'],'Koh Lipe'],
+['2027-01-10','Dom','10','Sunrise Beach, Koh Lipe','Snorkel desde la orilla',['Arrecife frente a Sunrise Beach, sin barco','Entrada al parque nacional: 200 THB'],'Koh Lipe'],
+['2027-01-11','Lun','11','Koh Adang','Buceo en Tarutao',['Salid temprano: mar más tranquilo y menos gente','Koh Adang, Koh Rawi, Koh Hin Ngam'],'Koh Lipe'],
+['2027-01-12','Mar','12','Koh Lipe','Día libre',['Libro, hamaca y atardecer en la playa','Mirador de Koh Adang si apetece caminar'],'Koh Lipe'],
+['2027-01-13','Mié','13','Koh Lipe','Último día de isla',['Otra inmersión o snorkel','Confirmad el traslado de mañana'],'Koh Lipe'],
+['2027-01-14','Jue','14','Hat Yai Airport','Vuelta a Bangkok',['Lancha + furgoneta al aeropuerto de Hat Yai (unas 3 h 30)','Vuelo Hat Yai → Bangkok por la tarde'],'Bangkok'],
+['2027-01-15','Vie','15','Bangkok','Compras y vuelta',['Mañana libre para compras','En el aeropuerto hacia las 15:30','Vuelo E9-846 a las 18:35'],'Avión']
+];
+const TRANS=[
+['2 ene','Bangkok → Krabi','Avión','1 h 20 aprox.','Varias aerolíneas al día'],
+['4–5 ene','Krabi ↔ Khao Sok','Excursión con recogida','2 días','Barca, canoa y noche en el lago incluidas'],
+['6 ene','Krabi → Koh Lanta','Furgoneta o taxi','2–3 h','Incluye cruces cortos en ferri'],
+['9 ene','Koh Lanta → Koh Lipe','Lancha rápida','unas 3 h','Solo en temporada alta; sale hacia las 13:30'],
+['14 ene','Koh Lipe → Hat Yai (aeropuerto)','Lancha + furgoneta','unas 3 h 30','Hi Lipe, Tigerline o Satun Pakbara'],
+['14 ene','Hat Yai → Bangkok','Avión','1 h 30 aprox.','Mejor un vuelo de tarde']
+];
+const GRP=[['ya','Esta semana','lo que antes se llena'],['dic','Antes del 15 de diciembre',''],['fin','La última semana','del 24 al 31 de diciembre']];
+const RES=[
+['h-lipe','ya','Alojamiento en Koh Lipe, 9–14 ene (5 noches)','Mejor en Sunrise Beach. Es lo primero que se agota en enero.'],
+['lancha','ya','Lancha Lanta → Lipe, 9 ene','En 12go.asia o con el operador. Se recomienda reservar unos 40 días antes.'],
+['v-kbv','ya','Vuelo Bangkok → Krabi, 2 ene','Mirad si sale de Suvarnabhumi (BKK) o de Don Mueang (DMK).'],
+['v-hdy','ya','Vuelo Hat Yai → Bangkok, 14 ene por la tarde','Que deje margen tras la lancha y la furgoneta (unas 3 h 30).'],
+['seguro','ya','Seguro de viaje con cobertura de buceo',''],
+['h-krabi','dic','Alojamiento en Krabi: 2, 3 y 5 ene','Klong Muang o Tubkaek. Avisad de que la noche del 4 no dormís.'],
+['khaosok','dic','Excursión a Khao Sok con noche en el lago, 4–5 ene','Con recogida en el hotel de Krabi.'],
+['h-lanta','dic','Alojamiento en Koh Lanta, 6–9 ene (3 noches)','Kantiang o Klong Nin.'],
+['h-bkk1','dic','Hotel en Bangkok, 1 ene','Cerca del aeropuerto si el vuelo a Krabi es temprano.'],
+['h-bkk2','dic','Hotel en Bangkok, 14 ene','Cerca de Suvarnabhumi o con buen acceso: el vuelo sale el 15 a las 18:35.'],
+['traslado','dic','Traslado Lipe → aeropuerto de Hat Yai, 14 ene','Hi Lipe, Tigerline o Satun Pakbara; que encaje con la hora del vuelo.'],
+['asientos','dic','Asientos juntas en Iberojet','Tarifa Basic: van sin asignar.'],
+['equipaje','dic','Revisar el equipaje de la tarifa Basic','Y añadir maleta facturada si hace falta.'],
+['tarjeta','fin','Tarjeta sin comisiones (Wise, Revolut o similar)',''],
+['esim','fin','eSIM de datos instalada','Para la TDAC, Grab y los mapas nada más llegar.'],
+['apps','fin','Grab y Bolt instaladas',''],
+['tdac','fin','TDAC rellenada (29–31 dic)','Gratis, solo en tdac.immigration.go.th. Guardad el QR.'],
+['kayak','fin','Kayak en Ao Thalane, 3 ene','Se puede reservar también allí mismo.']
+];
+const MAL=[
+['libros','Libros (en las islas no hay)'],['repe','Repelente fuerte'],['crema','Crema solar respetuosa con el arrecife'],['escarpines','Calzado que se pueda mojar'],
+['estanca','Bolsa estanca'],['snorkel','Gafas y tubo de snorkel'],['titulo','Titulación de buceo'],['mochila','Mochila pequeña para las lanchas'],
+['pasaporte','Pasaporte'],['baht','Algo de efectivo en baht'],['templo','Ropa que cubra hombros y rodillas para templos'],['copias','Reservas guardadas en el móvil'],['botella','Botella reutilizable'],['tdacqr','Captura del QR de la TDAC']
+];
+
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const now=iso(new Date());
+const dayDiff=(a,b)=>Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5);
+
+function renderStatic(){
+  const toGo=dayDiff(now,'2026-12-31');
+  $('#count').textContent=toGo>1?'Faltan '+toGo+' días para volar':toGo===1?'¡Volamos mañana!':toGo===0?'¡Hoy volamos! 21:45 desde Barajas':now<='2027-01-15'?'Día '+(dayDiff('2027-01-01',now)+1)+' de 15':'Viaje terminado';
+  const t=DAYS.find(d=>d[0]===now);
+  const box=$('#todayBox');
+  if(t){box.innerHTML='<div class="lbl">Hoy, '+t[1]+' '+t[2]+' de enero</div><div class="big">'+t[4]+'</div><ul style="margin:0;padding-left:18px">'+t[5].map(x=>'<li>'+x+'</li>').join('')+'</ul><div class="lbl" style="margin-top:8px">Dormís en: '+t[6]+' · <a href="'+map(t[3])+'">Ver en el mapa</a></div>'}
+  else if(now<'2027-01-01'){const n=RES.filter(r=>!state.done[r[0]]).length;box.innerHTML='<div class="lbl">Antes de salir</div><div class="big">'+(n?'Quedan '+n+' reservas por cerrar':'Todo reservado')+'</div><div>Lo primero: alojamiento en Koh Lipe y la lancha del 9 de enero. <a href="#reservas">Ver lo que queda</a></div>'}
+  else box.innerHTML='<div class="big">Buen viaje de vuelta</div><div class="lbl">Aterrizáis en Madrid el sábado 16 a las 02:25.</div>';
+  $('#days').innerHTML=DAYS.map(d=>'<li class="day'+(d[0]===now?' now':'')+'" id="d'+d[2]+'"><div class="when">'+d[2]+'<span>'+d[1]+' ene</span></div><div><h3>'+d[4]+(d[0]===now?'<span class="tag">Hoy</span>':'')+'</h3><ul>'+d[5].map(x=>'<li>'+x+'</li>').join('')+'</ul><div class="sleep">Dormís en: '+d[6]+' · <a href="'+map(d[3])+'">Mapa</a></div></div></li>').join('');
+  $('#trans').innerHTML=TRANS.map(r=>'<tr><td class="nw">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="nw">'+r[3]+'</td><td>'+r[4]+'</td></tr>').join('');
+}
+function renderChecks(){
+  const box=(r,how)=>'<li><label><input type="checkbox" data-id="'+r[0]+'"'+(state.done[r[0]]?' checked':'')+'><span>'+r[2]+(how&&r[3]?'<span class="how">'+r[3]+'</span>':'')+'</span></label></li>';
+  const pend=RES.filter(r=>!state.done[r[0]]),done=RES.filter(r=>state.done[r[0]]);
+  $('#resPend').innerHTML=pend.length?GRP.map(g=>{const it=pend.filter(r=>r[1]===g[0]);return it.length?'<div class="grp">'+g[1]+(g[2]?'<small>'+g[2]+'</small>':'')+'</div><ul class="check">'+it.map(r=>box(r,1)).join('')+'</ul>':''}).join(''):'<p class="big" style="font-size:24px">Todo reservado. Solo queda hacer la maleta.</p>';
+  $('#resDone').innerHTML=done.map(r=>box(r,0)).join('');
+  $('#resDoneBox').style.display=done.length?'':'none';$('#resDoneSum').textContent='Ya hecho ('+done.length+')';
+  $('#resCount').textContent=done.length+' de '+RES.length+' hechas · quedan '+pend.length;$('#resBar').style.width=(100*done.length/RES.length)+'%';
+  $('#mal').innerHTML=MAL.map(r=>'<li><label><input type="checkbox" data-id="'+r[0]+'"'+(state.done[r[0]]?' checked':'')+'><span>'+r[1]+'</span></label></li>').join('');
+  const n=MAL.filter(r=>state.done[r[0]]).length;$('#malCount').textContent=n+' de '+MAL.length+' en la maleta';$('#malBar').style.width=(100*n/MAL.length)+'%';
+}
+function renderPs(){
+  const u=state.ps||'';const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  $('#ps').innerHTML=(u?'<p><a class="pill" style="text-decoration:none" href="'+esc(u)+'">Abrir nuestro viaje en Polarsteps</a></p>':'<p class="lbl">Cread el viaje en la app de Polarsteps, copiad su enlace y pegadlo aquí. Lo verá también la otra.</p>')+
+  '<form id="psf" style="display:flex;gap:8px;flex-wrap:wrap"><input id="psi" type="url" placeholder="https://www.polarsteps.com/…" value="'+esc(u)+'" style="flex:1 1 240px;font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-height:44px"><button style="font:inherit;font-weight:600;padding:10px 18px;border-radius:10px;border:0;background:var(--sea2);color:#fff;min-height:44px;cursor:pointer">Guardar enlace</button></form>';
+}
+document.addEventListener('submit',e=>{if(e.target.id!=='psf')return;e.preventDefault();
+  const v=$('#psi').value.trim();if(v&&!/^https:\/\//.test(v)){$('#psi').focus();return}
+  if(v)state.ps=v;else delete state.ps;renderPs();clearTimeout(timer);save();
+});
+function sync(t){$('#sync').textContent=t}
+async function save(){
+  try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}
+  if(!art){sync('Guardado en este dispositivo.');return}
+  const json=JSON.stringify(state).replace(/</g,'\\u003c');
+  const body=BODY.replace(/(<script[^>]*id="state"[^>]*>)[\s\S]*?(<\/script>)/,(m,a,b)=>a+json+b);
+  const html='<!DOCTYPE html>\n<html lang="es">\n<head>\n'+HEAD+'\n</head>\n<body>\n'+body+'\n</body>\n</html>';
+  sync('Guardando…');
+  try{await art.publish(html);sync('Guardado para las dos.')}
+  catch(e){const c=String((e&&(e.code||e.message))||e);sync(/not_(granted|writer)/.test(c)?'Solo lectura: tus marcas se guardan en este dispositivo.':/conflict/.test(c)?'La otra persona guardó a la vez; vuelve a marcar si hace falta.':'No se pudo guardar ahora; se reintentará al marcar otra.')}
+}
+document.addEventListener('change',e=>{
+  const id=e.target&&e.target.dataset&&e.target.dataset.id;if(!id)return;
+  if(e.target.checked)state.done[id]=true;else delete state.done[id];
+  renderChecks();if(now<'2027-01-01')renderStatic();
+  clearTimeout(timer);timer=setTimeout(save,900);
+});
+renderStatic();renderChecks();renderPs();
+if(window.claude&&claude.use){claude.use('artifact').then(a=>{art=a;
+  if(a)sync('Las marcas se comparten entre las dos.');
+  else{try{const l=JSON.parse(localStorage.getItem(LS)||'{}');Object.assign(state.done,l.done||{});if(!state.ps&&l.ps)state.ps=l.ps;renderChecks();renderStatic();renderPs()}catch(e){}}
+}).catch(()=>{})}
+else{try{const l=JSON.parse(localStorage.getItem(LS)||'{}');Object.assign(state.done,l.done||{});if(!state.ps&&l.ps)state.ps=l.ps;renderChecks();renderStatic();renderPs()}catch(e){}}
+}
+</script>
+</body>
+</html>
